@@ -39,10 +39,7 @@ const userSchema = new Schema({
         required: true
     },
 
-    whatsapp:{
-        type: String,
-        required: true
-    },
+   
    
 
 })
