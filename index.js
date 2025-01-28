@@ -24,7 +24,7 @@ app.use((req, res, next) => { // middleware
 
 
     //decode the token 
-    jwt.verify(token, "kv-secret-89!", 
+    jwt.verify(token, process.env.JWT_SECRET_KEY, 
 
       (err,decoded) => {
 
