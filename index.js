@@ -4,6 +4,9 @@ import mongoose from 'mongoose';
 import userRouter from './Routes/userRoute.js';
 import productRouter from './Routes/productRouter.js'; // Assuming 'Routes' is a subdirectory of 'index.js'
 import jwt, { decode } from "jsonwebtoken"; 
+import dotenv from "dotenv"; 
+
+dotenv.config(); 
 
 const app = express();
 app.use(bodyParser.json());
@@ -34,7 +37,7 @@ req.user=decoded;         }
 });
 
 
-const mongoUrl = "mongodb+srv://dbuser:Deshan%40076838@cluster0.3daih.mongodb.net/StdMS?retryWrites=true&w=majority&appName=Cluster0";
+const mongoUrl=process.env.MONGO_URL;
 
 mongoose.connect(mongoUrl);
 
