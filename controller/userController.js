@@ -24,7 +24,6 @@ const newUser=new User(data);
     }).catch((error)=>{
         res.status(500).json(error, "Error registering user") 
     })
-//deshan
 
 }
 
@@ -54,7 +53,8 @@ export function loginUser(req, res){
                     firstName:user.firstName, 
                     lastName:user.lastName, 
                     email:user.email, 
-                    role:user.role
+                    role:user.role, 
+                    profilePicture:user.profilePicture
 
                     
                 }, process.env.JWT_SECRET_KEY)

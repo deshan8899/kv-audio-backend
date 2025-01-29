@@ -5,8 +5,9 @@ import userRouter from './Routes/userRoute.js';
 import productRouter from './Routes/productRouter.js'; // Assuming 'Routes' is a subdirectory of 'index.js'
 import jwt, { decode } from "jsonwebtoken"; 
 import dotenv from "dotenv"; 
+import reviewRouter from './Routes/reviewRouter.js';
 
-//hellow world
+
 
 
 
@@ -59,7 +60,19 @@ connection.on("error", (err) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/reviews", reviewRouter);
 
 app.listen(3002, () => {
   console.log('Server is running on port 3002');
 });
+
+/* "email": "deshanrashmika@example.com",
+"password": "deshanPassword123",
+
+Admin 
+
+"email": "deshan@example.com",
+"password": "deshanPassword123",  
+
+
+*/
