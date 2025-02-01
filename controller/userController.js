@@ -1,69 +1,93 @@
 import User from "../models/user.js";
-import bcrypt from "bcrypt"; 
-import jwt from "jsonwebtoken"; 
-import dotenv from "dotenv"; 
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
+dotenv.config();
 
+export function registerUser(req, res) {
+  const data = req.body;
 
+  data.password = bcrypt.hashSync(data.password, 10);
 
+  const newUser = new User(data);
 
-dotenv.config(); 
-
-
-export function registerUser(req, res){
-
-const data=req.body; 
-
-data.password=bcrypt.hashSync(data.password, 10)
-
-const newUser=new User(data); 
-
-    newUser.save().then(()=>{
-        res.json("user Added",)   
-          
-    }).catch((error)=>{
-        res.status(500).json(error, "Error registering user") 
+  newUser
+    .save()
+    .then(() => {
+      res.json("user Added");
     })
-
+    .catch((error) => {
+      res.status(500).json(error, "Error registering user");
+    });
 }
 
-export function loginUser(req, res){
-    const data=req.body; 
+export function loginUser(req, res) {
+  const data = req.body;
 
-    User.findOne(
-        {
-            email: data.email //filter
+  User.findOne({
+    email: data.email, //filter
+  }).then((user) => {
+    if (user == null) {
+      res.status(404).json("User not found");
+    } else {
+      const isPasswordCorrect = bcrypt.compareSync(
+        data.password,
+        user.password
+      );
 
-        }
-    ).then(
-        (user)=>{
-         if(user==null){
-                res.status(404).json("User not found")
-         }else{
-          
-        
+      if (isPasswordCorrect) {
+        //genarate the web taken
 
-            const isPasswordCorrect=bcrypt.compareSync(data.password, user.password);
+        const token = jwt.sign(
+          {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role,
+            profilePicture: user.profilePicture,
+            phone : user.phone 
+          },
+          process.env.JWT_SECRET_KEY
+        );
 
-            if(isPasswordCorrect){
+        res.json({ message: "Login successful", token: token });
+      } else {
+        res.status(404).json({ error: "Incorrect password" });
+      }
+    }
+  });
+}
 
-                //genarate the web taken 
+export function isItAdmin(req) {
+    let isItAdmin = false;
+  if (req.user != null) {
+    if (req.user.role == "admin") {
+      isItAdmin = true;
+    } else {
+        isItAdmin = false;
+    }
+  } else {
+    isItAdmin = false;
+  }
 
-                const token=jwt.sign({
-                    firstName:user.firstName, 
-                    lastName:user.lastName, 
-                    email:user.email, 
-                    role:user.role, 
-                    profilePicture:user.profilePicture
+  return isItAdmin;
+}
 
-                    
-                }, process.env.JWT_SECRET_KEY)
+export function isItCustomer(req) {
 
-                res.json({message:"Login successful", token:token}); 
-         }
-         else{
-            res.status(404).json({error: "Incorrect password"})
-         }
-        }
-    })
+let isItCustomer = false;
+
+  if (req.user != null) {
+    if (req.user.role == "customer") {
+      isItCustomer = true;
+    } else {
+      isItCustomer = false;
+    }
+  } else {
+    isItCustomer = false;
+  }
+
+  return isItCustomer;
+
 }

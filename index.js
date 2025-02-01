@@ -6,6 +6,7 @@ import productRouter from './Routes/productRouter.js'; // Assuming 'Routes' is a
 import jwt, { decode } from "jsonwebtoken"; 
 import dotenv from "dotenv"; 
 import reviewRouter from './Routes/reviewRouter.js';
+import inquiryRouter from './Routes/inquiryRouter.js';
 
 
 
@@ -61,6 +62,7 @@ connection.on("error", (err) => {
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
 app.use("/api/reviews", reviewRouter);
+app.use("/api/inquiries", inquiryRouter);
 
 app.listen(3002, () => {
   console.log('Server is running on port 3002');
@@ -71,8 +73,8 @@ app.listen(3002, () => {
 
 Admin 
 
-"email": "deshan@example.com",
-"password": "deshanPassword123",  
+"email": "heshan@gmail.com",
+ "password": "1234", 
 
 
 */
