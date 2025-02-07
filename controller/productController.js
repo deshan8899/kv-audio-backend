@@ -80,6 +80,7 @@ export async function updateProduct(req, res) {
 export async function deleteProduct(req, res) {
 
   try{
+    //aawd
 
    if (isItAdmin(req)){
     const key = req.params.key;
